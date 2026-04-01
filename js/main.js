@@ -2,7 +2,7 @@
 const questionBank = [
   {
     id: "currentMethod",
-    context: "先看看你的获客现状",
+    context: "先看一个关键问题",
     title: "你现在主要靠什么方式找客户？",
     options: [
       {
@@ -37,7 +37,7 @@ const questionBank = [
   },
   {
     id: "goal",
-    context: "接下来，看看你的核心诉求",
+    context: "这会决定哪种方式更适合你",
     title: "获客这件事，你现在最想解决什么？",
     options: [
       {
@@ -65,7 +65,7 @@ const questionBank = [
   },
   {
     id: "contentAbility",
-    context: "了解一下你的内容基础",
+    context: "不同方式对内容的要求不一样",
     title: "你目前在内容方面的情况？",
     options: [
       {
@@ -228,7 +228,6 @@ const questionOptions = document.getElementById("question-options");
 const loadingText = document.getElementById("loading-text");
 const resultTypeShort = document.getElementById("result-type-short");
 const resultTypeTitle = document.getElementById("result-type-title");
-const resultScore = document.getElementById("result-score");
 const resultSummaryText = document.getElementById("result-summary-text");
 const resultHowText = document.getElementById("result-how-text");
 const traitList = document.getElementById("trait-list");
@@ -277,7 +276,13 @@ function renderQuestion() {
       html += `<span class="option-sub">${opt.sub}</span>`;
     }
     btn.innerHTML = html;
-    btn.addEventListener("click", () => selectAnswer(q, opt));
+    btn.addEventListener("click", () => {
+      // 选中反馈：高亮后延迟执行
+      btn.classList.add("selected");
+      // 禁用其他选项防止重复点击
+      questionOptions.querySelectorAll(".option-btn").forEach(b => b.disabled = true);
+      setTimeout(() => selectAnswer(q, opt), 300);
+    });
     questionOptions.appendChild(btn);
   });
 }
@@ -322,14 +327,6 @@ function resolveResultType() {
   }
 
   return candidates[0];
-}
-
-function computeMatchScore(type) {
-  const base = { ad: 78, agency: 79, content: 80 }[type] || 78;
-  const scoreBoost = Math.round(state.scores[type] * 2.2);
-  const businessBoost = state.answers.business === "mixed" ? 2 : 1;
-  const storeBoost = state.answers.stores === "large" ? 2 : state.answers.stores ? 1 : 0;
-  return Math.min(base + scoreBoost + businessBoost + storeBoost, 96);
 }
 
 function buildMethodComparison(type) {
@@ -451,17 +448,19 @@ function renderList(container, items) {
 function renderResult() {
   const resultType = resolveResultType();
   const profile = resultProfiles[resultType];
-  const score = computeMatchScore(resultType);
 
   resultTypeShort.textContent = profile.shortLabel;
   resultTypeTitle.textContent = profile.title;
-  resultScore.textContent = score;
   resultSummaryText.textContent = buildMethodComparison(resultType);
   resultHowText.textContent = profile.how;
 
   renderList(traitList, buildAnalysisList(resultType));
   renderList(actionList, buildActionList(resultType));
   resultHowGap.textContent = profile.howGap;
+
+  // 加微信区动态显示方案名
+  const qrLabel = document.getElementById("qr-scheme-label");
+  if (qrLabel) qrLabel.textContent = profile.schemeLabel;
 }
 
 /* ===== Loading ===== */
