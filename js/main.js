@@ -93,7 +93,7 @@ const questionBank = [
   },
   {
     id: "participation",
-    context: "最后一个关键判断",
+    context: "最后，这决定了推进节奏",
     title: "获客推广这件事，你希望怎么推进？",
     options: [
       {
