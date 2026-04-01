@@ -177,19 +177,22 @@ const resultProfiles = {
   ad: {
     shortLabel: "精准获客",
     title: "直接找到想买你东西的人，让他们主动来找你",
-    how: "通过微信生态精准触达潜在客户——系统帮你找到对你的产品或服务感兴趣的人，直接把你推到他们面前。不用等、不用养，上线就能开始收到咨询。",
+    how: "核心思路：通过微信生态精准触达潜在客户，让对你产品或服务感兴趣的人主动来找你。不用等、不用养，启动就能开始收到咨询。",
+    howGap: "具体怎么设置、预算怎么分配、你的行业同行跑出了什么效果——这些在报告里都有。",
     schemeLabel: "精准获客方案"
   },
   agency: {
     shortLabel: "省心获客",
     title: "有专业团队帮你搞定，你专心做生意",
-    how: "把「在微信找客户」这件事交给有经验的团队来做。从策略到执行全程有人负责，你不用自己摸索，重点盯结果和线索质量就行。",
+    how: "核心思路：把「在微信找客户」这件事交给有经验的团队。从策略到执行有人负责，你重点盯结果和线索质量。",
+    howGap: "怎么选团队、合作模式怎么定、费用结构大概什么样——报告里有详细说明。",
     schemeLabel: "省心获客方案"
   },
   content: {
     shortLabel: "长效获客",
     title: "先让人认识你、信任你，再持续引来客户",
-    how: "在微信生态里搭好你的内容和客户承接体系（视频号、公众号、企业微信等），用好内容吸引潜在客户关注你，再配合推广把内容放大。前期需要一些耐心，但获客成本会越来越低。",
+    how: "核心思路：在微信生态里搭好内容和客户承接体系，用好内容吸引潜在客户关注你，再配合推广把内容放大。前期需要耐心，但获客成本会越来越低。",
+    howGap: "内容怎么做、推广怎么配合、你的行业适合什么内容形式——报告里有完整拆解。",
     schemeLabel: "长效获客方案"
   }
 };
@@ -486,9 +489,15 @@ function renderResult() {
   resultScore.textContent = score;
   resultSummaryText.textContent = buildMethodComparison(resultType);
   resultHowText.textContent = profile.how;
+
+  // 渲染信息缺口引导
+  const howGapEl = document.getElementById("result-how-gap");
+  if (howGapEl) howGapEl.textContent = profile.howGap;
+
   renderList(traitList, buildAnalysisList(resultType));
   renderList(actionList, buildActionList(resultType));
 
+  // 情况回扣卡片
   const cards = [];
   cards.push({ label: "当前获客方式", value: currentMethodLabels[state.answers.currentMethod] || "—" });
   cards.push({ label: "经营形式", value: businessLabels[state.answers.business] || "—" });
