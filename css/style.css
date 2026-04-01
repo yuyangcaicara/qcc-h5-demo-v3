@@ -444,22 +444,58 @@ button {
 .result-hero {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 14px;
 }
 
-.result-hero h2 {
-  margin: 0;
-  font-size: 17px;
-  font-weight: 700;
-  line-height: 1.28;
+.result-hero--highlight {
+  background: linear-gradient(135deg, rgba(14, 175, 121, 0.08) 0%, rgba(27, 191, 131, 0.15) 50%, rgba(101, 221, 176, 0.10) 100%);
+  border: 1.5px solid rgba(27, 191, 131, 0.22);
+  padding: 24px 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+.result-hero--highlight::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(27, 191, 131, 0.12), transparent 70%);
+  pointer-events: none;
+}
+
+.result-hero-icon {
+  width: 56px;
+  height: 56px;
+  min-width: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(27, 191, 131, 0.18), rgba(27, 191, 131, 0.06));
+  box-shadow: 0 4px 12px rgba(27, 191, 131, 0.12);
+}
+
+.result-hero-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.result-hero-body .eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green-deep);
+  opacity: 0.8;
 }
 
 .result-type-heading {
   font-size: 28px;
   font-weight: 800;
   color: var(--green-deep);
-  margin: 8px 0 4px;
+  margin: 6px 0 4px;
   line-height: 1.2;
 }
 

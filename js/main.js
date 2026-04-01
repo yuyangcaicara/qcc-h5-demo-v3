@@ -176,6 +176,7 @@ const questionBank = [
 const resultProfiles = {
   ad: {
     shortLabel: "精准获客",
+    emoji: "🎯",
     title: "快速找到想买的人，让他们主动来咨询",
     how: "在微信生态里，按行业、地区、兴趣等标签精准触达潜在客户。启动后就能开始收到咨询，不用等、不用养。",
     howGap: "具体怎么设置、预算怎么分配、你的行业同行跑出了什么效果——这些在报告里都有。",
@@ -183,6 +184,7 @@ const resultProfiles = {
   },
   agency: {
     shortLabel: "省心获客",
+    emoji: "🤝",
     title: "有专业团队帮你搞定，你专心做生意",
     how: "把「在微信找客户」交给有经验的团队，从策略到执行全程有人负责。你重点盯结果和线索质量就行。",
     howGap: "怎么选团队、合作模式怎么定、费用结构大概什么样——报告里有详细说明。",
@@ -190,6 +192,7 @@ const resultProfiles = {
   },
   content: {
     shortLabel: "长效获客",
+    emoji: "🌱",
     title: "先让人认识你、信任你，再持续引来客户",
     how: "在微信生态搭好内容体系和客户承接，用内容吸引潜在客户关注，再配合推广放大效果。前期要耐心，但获客成本会越来越低。",
     howGap: "内容怎么做、推广怎么配合、你的行业适合什么内容形式——报告里有完整拆解。",
@@ -451,6 +454,11 @@ function renderResult() {
 
   resultTypeShort.textContent = profile.shortLabel;
   resultTypeTitle.textContent = profile.title;
+
+  // 更新 hero emoji
+  const heroEmoji = document.getElementById("result-hero-emoji");
+  if (heroEmoji) heroEmoji.textContent = profile.emoji;
+
   resultSummaryText.textContent = buildMethodComparison(resultType);
   resultHowText.textContent = profile.how;
 
