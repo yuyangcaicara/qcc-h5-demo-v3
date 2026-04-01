@@ -212,29 +212,51 @@ button {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(245, 255, 250, 0.84)),
     linear-gradient(140deg, rgba(125, 235, 188, 0.1), transparent 45%);
-  gap: 6px;
+  gap: 0;
+  padding: 40px 22px;
+}
+
+.hero-icon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(27, 191, 131, 0.12), rgba(27, 191, 131, 0.04));
+  margin-bottom: 18px;
+}
+
+.hero-card--full .pill {
+  margin-bottom: 14px;
 }
 
 .hero-card--full h2 {
-  margin: 14px 0 0;
+  margin: 0;
   font-size: 28px;
   font-weight: 800;
-  line-height: 1.32;
+  line-height: 1.36;
 }
 
 .hero-card--full .hero-lead {
-  margin: 12px 0 20px;
+  margin: 16px 0 0;
   font-size: 15px;
   color: var(--text-soft);
-  line-height: 1.7;
+  line-height: 1.8;
 }
 
-.hero-card--full .primary-btn {
-  margin-top: 8px;
+.hero-cta-area {
+  margin-top: 36px;
+  width: 100%;
+}
+
+.hero-cta-area .primary-btn {
+  margin: 0;
 }
 
 .social-proof-intro {
-  margin: 14px 0 0;
+  margin: 16px 0 0;
   font-size: 12px;
   color: var(--text-soft);
 }
@@ -642,7 +664,16 @@ button {
   }
 
   .hero-card--full {
-    min-height: calc(100vh - 120px);
+    min-height: calc(100vh - 100px);
+    padding: 32px 18px;
+  }
+
+  .hero-icon {
+    width: 56px;
+    height: 56px;
+    font-size: 28px;
+    border-radius: 16px;
+    margin-bottom: 14px;
   }
 
   .step-card h2 {

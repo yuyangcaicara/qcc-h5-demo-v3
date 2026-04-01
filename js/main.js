@@ -479,7 +479,11 @@ function startLoadingAndShowResult() {
 
   state.loadingTimer = setTimeout(() => {
     clearInterval(state.loadingTextTimer);
-    renderResult();
+    try {
+      renderResult();
+    } catch (e) {
+      console.error("renderResult error:", e);
+    }
     showScreen("result");
   }, 2200);
 }
