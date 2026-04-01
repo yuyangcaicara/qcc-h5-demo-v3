@@ -1,8 +1,87 @@
 /* ===== 场景化题目（去问卷感） ===== */
 const questionBank = [
   {
+    id: "business",
+    context: "先了解一下你的生意",
+    title: "你的生意主要在哪里做？",
+    options: [
+      {
+        id: "online",
+        main: "线上经营为主",
+        scores: { ad: 1, content: 1 },
+        primary: "ad"
+      },
+      {
+        id: "offline",
+        main: "线下门店为主",
+        scores: { agency: 2, ad: 1 },
+        primary: "agency"
+      },
+      {
+        id: "mixed",
+        main: "线上和线下都在做",
+        scores: { content: 2, ad: 1 },
+        primary: "content"
+      }
+    ]
+  },
+  {
+    id: "stores",
+    context: "门店规模会影响推荐",
+    title: "目前几家店？",
+    when: (answers) => answers.business && answers.business !== "online",
+    options: [
+      {
+        id: "single",
+        main: "1 家",
+        scores: { agency: 1, ad: 1 },
+        primary: "agency"
+      },
+      {
+        id: "small",
+        main: "2-5 家",
+        scores: { ad: 2, agency: 1 },
+        primary: "ad"
+      },
+      {
+        id: "large",
+        main: "6 家以上",
+        scores: { content: 1, ad: 1 },
+        primary: "content"
+      }
+    ]
+  },
+  {
+    id: "contentAbility",
+    context: "不同方式对内容的要求不一样",
+    title: "你目前在内容方面的情况？",
+    options: [
+      {
+        id: "none",
+        main: "基本没做过内容",
+        sub: "朋友圈偶尔发发，没有系统在做",
+        scores: { ad: 2, agency: 1 },
+        primary: "ad"
+      },
+      {
+        id: "weak",
+        main: "有在做但没什么章法",
+        sub: "发了不少，不确定有没有效果",
+        scores: { ad: 1, agency: 1, content: 1 },
+        primary: "agency"
+      },
+      {
+        id: "experienced",
+        main: "有一定平台运营经验",
+        sub: "视频号/公众号/抖音等有在认真做",
+        scores: { content: 3 },
+        primary: "content"
+      }
+    ]
+  },
+  {
     id: "currentMethod",
-    context: "先看一个关键问题",
+    context: "接下来聊聊获客",
     title: "你现在主要靠什么方式找客户？",
     options: [
       {
@@ -64,36 +143,8 @@ const questionBank = [
     ]
   },
   {
-    id: "contentAbility",
-    context: "不同方式对内容的要求不一样",
-    title: "你目前在内容方面的情况？",
-    options: [
-      {
-        id: "none",
-        main: "基本没做过内容",
-        sub: "朋友圈偶尔发发，没有系统在做",
-        scores: { ad: 2, agency: 1 },
-        primary: "ad"
-      },
-      {
-        id: "weak",
-        main: "有在做但没什么章法",
-        sub: "发了不少，不确定有没有效果",
-        scores: { ad: 1, agency: 1, content: 1 },
-        primary: "agency"
-      },
-      {
-        id: "experienced",
-        main: "有一定平台运营经验",
-        sub: "视频号/公众号/抖音等有在认真做",
-        scores: { content: 3 },
-        primary: "content"
-      }
-    ]
-  },
-  {
     id: "participation",
-    context: "最后，这决定了推进节奏",
+    context: "最后一步",
     title: "获客推广这件事，你希望怎么推进？",
     options: [
       {
@@ -118,57 +169,6 @@ const questionBank = [
         primary: "agency"
       }
     ]
-  },
-  {
-    id: "business",
-    context: "结合你的经营情况来判断",
-    title: "你的生意主要在哪里做？",
-    options: [
-      {
-        id: "online",
-        main: "线上经营为主",
-        scores: { ad: 1, content: 1 },
-        primary: "ad"
-      },
-      {
-        id: "offline",
-        main: "线下门店为主",
-        scores: { agency: 2, ad: 1 },
-        primary: "agency"
-      },
-      {
-        id: "mixed",
-        main: "线上和线下都在做",
-        scores: { content: 2, ad: 1 },
-        primary: "content"
-      }
-    ]
-  },
-  {
-    id: "stores",
-    title: "目前几家店？",
-    context: "门店规模会影响推荐",
-    when: (answers) => answers.business && answers.business !== "online",
-    options: [
-      {
-        id: "single",
-        main: "1 家",
-        scores: { agency: 1, ad: 1 },
-        primary: "agency"
-      },
-      {
-        id: "small",
-        main: "2-5 家",
-        scores: { ad: 2, agency: 1 },
-        primary: "ad"
-      },
-      {
-        id: "large",
-        main: "6 家以上",
-        scores: { content: 1, ad: 1 },
-        primary: "content"
-      }
-    ]
   }
 ];
 
@@ -177,25 +177,25 @@ const resultProfiles = {
   ad: {
     shortLabel: "精准获客",
     emoji: "🎯",
-    title: "快速找到想买的人，让他们主动来咨询",
-    how: "在微信生态里，按行业、地区、兴趣等标签精准触达潜在客户。启动后就能开始收到咨询，不用等、不用养。",
-    howGap: "具体怎么设置、预算怎么分配、你的行业同行跑出了什么效果——这些在报告里都有。",
+    title: "让感兴趣的客户主动来找你",
+    how: "按行业、地区、兴趣精准触达，启动快、见效快。",
+    howGap: "预算分配、同行效果——报告里都有。",
     schemeLabel: "精准获客方案"
   },
   agency: {
     shortLabel: "省心获客",
     emoji: "🤝",
-    title: "有专业团队帮你搞定，你专心做生意",
-    how: "把「在微信找客户」交给有经验的团队，从策略到执行全程有人负责。你重点盯结果和线索质量就行。",
-    howGap: "怎么选团队、合作模式怎么定、费用结构大概什么样——报告里有详细说明。",
+    title: "专业团队执行，你只管看结果",
+    how: "从策略到执行全托管，你盯线索质量就行。",
+    howGap: "合作模式、费用参考——报告里有说明。",
     schemeLabel: "省心获客方案"
   },
   content: {
     shortLabel: "长效获客",
     emoji: "🌱",
-    title: "先让人认识你、信任你，再持续引来客户",
-    how: "在微信生态搭好内容体系和客户承接，用内容吸引潜在客户关注，再配合推广放大效果。前期要耐心，但获客成本会越来越低。",
-    howGap: "内容怎么做、推广怎么配合、你的行业适合什么内容形式——报告里有完整拆解。",
+    title: "用内容吸引客户，越做成本越低",
+    how: "搭好内容 + 客户承接体系，配合推广持续获客。",
+    howGap: "内容形式、推广配合——报告里有拆解。",
     schemeLabel: "长效获客方案"
   }
 };
@@ -353,12 +353,12 @@ function resolveResultType() {
   if (candidates.length === 1) return candidates[0];
 
   const tieBreakOrder = [
+    state.answerPrimaries.business,
+    state.answerPrimaries.stores,
+    state.answerPrimaries.contentAbility,
     state.answerPrimaries.currentMethod,
     state.answerPrimaries.goal,
-    state.answerPrimaries.contentAbility,
-    state.answerPrimaries.participation,
-    state.answerPrimaries.business,
-    state.answerPrimaries.stores
+    state.answerPrimaries.participation
   ];
 
   for (const t of tieBreakOrder) {
@@ -371,36 +371,36 @@ function resolveResultType() {
 function buildMethodComparison(type) {
   const method = state.answers.currentMethod;
   if (method === "coldcall") {
-    if (type === "ad") return "相比一个一个打电话，这种方式能让感兴趣的客户主动找上门，效率完全不在一个量级。";
-    if (type === "agency") return "相比自己打电话找客户，专业团队能帮你系统化获客，不再靠人力硬扛。";
-    return "打电话只能一对一，把内容和客户承接做好后，一条内容可能带来一批客户。";
+    if (type === "ad") return "比一个个打电话高效得多——让客户主动找上门。";
+    if (type === "agency") return "不再靠人力硬扛，让专业团队系统化帮你获客。";
+    return "一条好内容可能带来一批客户，比一对一效率高很多。";
   }
   if (method === "referral") {
-    if (type === "ad") return "转介绍虽然精准但量有限，这种方式能帮你打开新客源，不再只等老客户介绍。";
-    if (type === "agency") return "转介绍量不稳定，让专业团队持续补充新客源，生意才不容易断档。";
-    return "转介绍加上内容经营，能让更多潜在客户主动关注你，不再只靠圈子。";
+    if (type === "ad") return "转介绍量有限，这能帮你打开全新客源。";
+    if (type === "agency") return "转介绍不稳定，专业团队能持续补充新客源。";
+    return "转介绍 + 内容经营，让更多人主动关注你。";
   }
   if (method === "content") {
-    if (type === "ad") return "内容获客见效慢，先快速验证哪些客户愿意买单，再反哺内容方向。";
-    if (type === "agency") return "内容做得不错但转化不稳定，让专业团队帮你把获客链路串起来。";
-    return "你已经有内容基础，下一步是把内容、承接和推广串成一套完整链路。";
+    if (type === "ad") return "内容见效慢，先快速验证哪些客户愿意买单。";
+    if (type === "agency") return "内容不错但转化不稳，让专业团队把链路串起来。";
+    return "你有内容基础，下一步是串成完整获客链路。";
   }
   if (method === "ads") {
-    if (type === "ad") return "已经在做推广，说明方向对。下一步是优化效率，让每一块钱花得更值。";
-    if (type === "agency") return "已经在做推广但效果不稳定，交给有经验的团队做精细化运营可能更合适。";
-    return "已经有推广基础，下一步是把内容经营和推广结合起来，降低长期获客成本。";
+    if (type === "ad") return "方向对，下一步是优化效率，让每块钱更值。";
+    if (type === "agency") return "效果不稳定，交给有经验的团队做精细化运营。";
+    return "推广 + 内容结合，能降低长期获客成本。";
   }
   return "";
 }
 
 function buildBusinessInsight() {
-  if (state.answers.business === "online") return "线上经营，优先把咨询入口和承接跑顺。";
+  if (state.answers.business === "online") return "线上经营，重点跑顺咨询入口";
   if (state.answers.business === "offline") {
-    if (state.answers.stores === "single") return "单店阶段，动作越清楚越容易持续。";
-    if (state.answers.stores === "small") return "多店阶段，更看重动作能不能复制。";
-    return "门店较多，需要兼顾短期线索和长期放大。";
+    if (state.answers.stores === "single") return "单店，动作越简单越好执行";
+    if (state.answers.stores === "small") return "多店，关键是动作能复制";
+    return "门店多，短期线索和长期放大都要顾";
   }
-  if (state.answers.business === "mixed") return "线上线下都在做，更看重整体承接能力。";
+  if (state.answers.business === "mixed") return "线上线下都做，重点是整体承接";
   return "";
 }
 
@@ -410,72 +410,60 @@ function buildAnalysisList(type) {
 
   if (type === "ad") {
     return [
-      "当前更像先验证阶段，启动速度比完整打法更重要。",
-      ca === "none"
-        ? "内容还没起来，先用更直接的方式验证客户需求。"
-        : ca === "weak"
-          ? "有内容但不成体系，先把有效入口跑出来更实际。"
-          : "有平台经验，但眼下优先验证线索和转化效率。",
+      "现阶段启动速度 > 完整打法",
+      ca === "none" ? "没内容基础，先用直接方式验证需求" : ca === "weak" ? "内容不成体系，先跑通有效入口" : "有经验，但先验证线索转化效率",
       businessInsight
-    ].filter(Boolean).slice(0, 3);
+    ].filter(Boolean);
   }
 
   if (type === "agency") {
     return [
-      "核心不是你想不想做，而是自己扛执行容易断。",
-      ca === "none"
-        ? "内容和执行都不稳定，借助成熟团队更现实。"
-        : ca === "weak"
-          ? "有一些基础但没章法，先让专业团队把动作带起来。"
-          : "有经验但缺稳定推进机制，交给团队起步更快。",
+      "自己扛执行容易断档",
+      ca === "none" ? "内容和执行都不稳，借助成熟团队更现实" : ca === "weak" ? "有基础没章法，让专业团队带起来" : "有经验但缺稳定机制，交给团队更快",
       businessInsight
-    ].filter(Boolean).slice(0, 3);
+    ].filter(Boolean);
   }
 
   return [
-    "你已经适合把整条获客链路一起考虑。",
-    ca === "experienced"
-      ? "有平台内容经验，迁移到微信后可以一起放大。"
-      : ca === "weak"
-        ? "有一些基础，重点是把动作稳定下来。"
-        : "内容能力还弱，但问题不只是缺线索，链路需要搭起来。",
+    "适合把整条获客链路一起搭",
+    ca === "experienced" ? "有内容经验，迁移到微信可以放大" : ca === "weak" ? "有基础，重点让动作稳定下来" : "内容能力还弱，但链路需要先搭起来",
     businessInsight
-  ].filter(Boolean).slice(0, 3);
+  ].filter(Boolean);
 }
 
 function buildActionList(type) {
   if (type === "ad") {
     return [
       state.answers.business === "online"
-        ? "先把咨询入口和跟进话术整理清楚，再开始第一轮。"
+        ? "整理好咨询入口和跟进话术"
         : state.answers.business === "offline"
-          ? "先按门店范围和到店承接方式设计第一轮获客动作。"
-          : "先分清线上咨询和线下到店两个目标，别混着跑。",
-      "小范围验证哪些人群和内容更容易带来有效咨询。",
-      "有第一轮反馈后，再决定加量还是补承接环节。"
+          ? "按门店范围设计第一轮获客动作"
+          : "分清线上咨询和线下到店两个目标",
+      "小范围测试，看哪些人群转化好",
+      "有反馈后再决定加量还是补环节"
     ];
   }
 
   if (type === "agency") {
     return [
       state.answers.business === "offline"
-        ? "先把门店承接区域和跟进流程整理给执行团队。"
+        ? "把门店区域和跟进流程整理给团队"
         : state.answers.business === "mixed"
-          ? "先把线上和线下两类目标拆开，让团队分口径推进。"
-          : "先把线索标准和预算范围定清楚，再开始推进。",
-      "你重点盯线索质量和成交情况，执行交给团队。",
-      "先跑一轮标准化测试，再决定是否继续放大。"
+          ? "线上线下目标拆开，让团队分口径推"
+          : "定清线索标准和预算范围",
+      "你盯线索质量和成交，执行交给团队",
+      "先跑一轮测试，再决定是否放大"
     ];
   }
 
   return [
     state.answers.business === "online"
-      ? "先把内容、咨询承接和客户管理连起来。"
+      ? "把内容、咨询承接和客户管理连起来"
       : state.answers.business === "offline"
-        ? "先把门店内容、到店承接和转化流程串起来。"
-        : "先把线上内容、线下承接和后续跟进分工清楚。",
-    "用轻量内容验证哪些表达和案例最能吸引目标客户。",
-    "内容和承接稳定后，再配合推广放大效果。"
+        ? "把门店内容、到店承接和转化串起来"
+        : "分清线上内容和线下承接的分工",
+    "用轻量内容验证什么最吸引目标客户",
+    "稳定后配合推广放大效果"
   ];
 }
 

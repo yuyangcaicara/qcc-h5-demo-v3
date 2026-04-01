@@ -298,11 +298,16 @@ button {
   box-shadow: 0 16px 32px rgba(21, 148, 101, 0.28);
 }
 
-.primary-btn:hover,
-.primary-btn:active,
-.secondary-btn:hover,
-.option-btn:hover {
-  transform: translateY(-2px);
+@media (hover: hover) and (pointer: fine) {
+  .primary-btn:hover,
+  .secondary-btn:hover,
+  .option-btn:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.primary-btn:active {
+  transform: translateY(-1px);
 }
 
 .primary-btn.full,
@@ -394,10 +399,12 @@ button {
   line-height: 1.5;
 }
 
-.option-btn:hover {
-  border-color: rgba(27, 191, 131, 0.42);
-  box-shadow: 0 14px 26px rgba(20, 132, 92, 0.1);
-  background: linear-gradient(180deg, #ffffff 0%, rgba(241, 255, 248, 0.96) 100%);
+@media (hover: hover) and (pointer: fine) {
+  .option-btn:hover {
+    border-color: rgba(27, 191, 131, 0.42);
+    box-shadow: 0 14px 26px rgba(20, 132, 92, 0.1);
+    background: linear-gradient(180deg, #ffffff 0%, rgba(241, 255, 248, 0.96) 100%);
+  }
 }
 
 .option-btn.selected {
@@ -532,9 +539,18 @@ button {
   margin: 10px 0 8px;
 }
 
-.how-text {
-  margin: 10px 0 0;
+.analysis-highlight {
   font-size: 15px;
+  font-weight: 600;
+  color: var(--green-deep);
+  line-height: 1.7;
+  margin: 10px 0 12px;
+}
+
+.how-text {
+  margin: 10px 0 12px;
+  font-size: 15px;
+  font-weight: 600;
   color: var(--text);
   line-height: 1.7;
 }
@@ -554,10 +570,15 @@ button {
   line-height: 1.7;
 }
 
+.bullet-list.compact {
+  font-size: 13px;
+  line-height: 1.6;
+}
+
 .bullet-list li {
   position: relative;
   padding-left: 16px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .bullet-list li:last-child {
@@ -576,12 +597,68 @@ button {
   opacity: 0.5;
 }
 
-.how-gap-text {
-  margin: 14px 0 0;
+/* Action Steps (numbered) */
+.action-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: step;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.action-steps li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 28px;
+  margin-bottom: 10px;
+}
+
+.action-steps li:last-child {
+  margin-bottom: 0;
+}
+
+.action-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--green), var(--green-deep));
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* How Gap Box */
+.how-gap-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(27, 191, 131, 0.06);
+  border: 1px solid rgba(27, 191, 131, 0.12);
+}
+
+.how-gap-box span {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.how-gap-box p {
+  margin: 0;
   font-size: 13px;
   color: var(--text-soft);
   line-height: 1.6;
-  opacity: 0.8;
 }
 
 .result-card.highlight {
