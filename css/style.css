@@ -411,6 +411,25 @@ button {
   pointer-events: none;
 }
 
+/* ===== Back Button ===== */
+.back-btn {
+  margin-top: 18px;
+  padding: 10px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-soft);
+  transition: color 180ms ease;
+  text-align: center;
+  width: 100%;
+}
+
+.back-btn:hover {
+  color: var(--green-deep);
+}
+
 /* ===== Loading ===== */
 .loading-card {
   min-height: 420px;

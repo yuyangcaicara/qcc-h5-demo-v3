@@ -212,6 +212,7 @@ const state = {
   scores: { ad: 0, agency: 0, content: 0 },
   answers: {},
   answerPrimaries: {},
+  history: [],  // 用于回退：每步记录 { questionId, optionId, primary, scores }
   loadingTimer: null,
   loadingTextTimer: null
 };
@@ -270,6 +271,12 @@ function renderQuestion() {
   stepContext.textContent = q.context || "";
   questionTitle.textContent = q.title;
 
+  // 上一步按钮：第一题时隐藏
+  const btnPrev = document.getElementById("btn-prev");
+  if (btnPrev) {
+    btnPrev.style.display = state.currentQuestionIndex === 0 ? "none" : "block";
+  }
+
   questionOptions.innerHTML = "";
   q.options.forEach((opt) => {
     const btn = document.createElement("button");
@@ -291,6 +298,14 @@ function renderQuestion() {
 }
 
 function selectAnswer(question, option) {
+  // 记录历史以便回退
+  state.history.push({
+    questionId: question.id,
+    optionId: option.id,
+    primary: option.primary,
+    scores: { ...option.scores }
+  });
+
   state.answers[question.id] = option.id;
   state.answerPrimaries[question.id] = option.primary;
 
@@ -306,6 +321,27 @@ function selectAnswer(question, option) {
   }
 
   startLoadingAndShowResult();
+}
+
+function goBack() {
+  if (state.currentQuestionIndex === 0) {
+    // 第一题回退到首页
+    showScreen("intro");
+    return;
+  }
+
+  // 撤销当前 index 对应的上一题的答案
+  const lastEntry = state.history.pop();
+  if (lastEntry) {
+    delete state.answers[lastEntry.questionId];
+    delete state.answerPrimaries[lastEntry.questionId];
+    Object.entries(lastEntry.scores).forEach(([type, value]) => {
+      state.scores[type] -= value;
+    });
+  }
+
+  state.currentQuestionIndex -= 1;
+  renderQuestion();
 }
 
 /* ===== 结果计算 ===== */
@@ -502,6 +538,7 @@ function resetState() {
   state.scores = { ad: 0, agency: 0, content: 0 };
   state.answers = {};
   state.answerPrimaries = {};
+  state.history = [];
   clearInterval(state.loadingTextTimer);
   clearTimeout(state.loadingTimer);
   renderQuestion();
@@ -514,6 +551,9 @@ function initEvents() {
     resetState();
     showScreen("quiz");
   });
+
+  // 上一步
+  document.getElementById("btn-prev").addEventListener("click", goBack);
 
   // 重新来
   document.querySelector('[data-action="restart"]').addEventListener("click", () => {
