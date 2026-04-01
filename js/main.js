@@ -49,8 +49,8 @@ const questionBank = [
       },
       {
         id: "b",
-        main: "有人帮我做，我盯结果就行",
-        sub: "没精力自己摸索",
+        main: "不想乱花钱，要确定有效再投入",
+        sub: "试过一些方法，怕再踩坑",
         scores: { agency: 2 },
         primary: "agency"
       },
@@ -176,22 +176,22 @@ const questionBank = [
 const resultProfiles = {
   ad: {
     shortLabel: "精准获客",
-    title: "直接找到想买你东西的人，让他们主动来找你",
-    how: "核心思路：通过微信生态精准触达潜在客户，让对你产品或服务感兴趣的人主动来找你。不用等、不用养，启动就能开始收到咨询。",
+    title: "快速找到想买的人，让他们主动来咨询",
+    how: "在微信生态里，按行业、地区、兴趣等标签精准触达潜在客户。启动后就能开始收到咨询，不用等、不用养。",
     howGap: "具体怎么设置、预算怎么分配、你的行业同行跑出了什么效果——这些在报告里都有。",
     schemeLabel: "精准获客方案"
   },
   agency: {
     shortLabel: "省心获客",
     title: "有专业团队帮你搞定，你专心做生意",
-    how: "核心思路：把「在微信找客户」这件事交给有经验的团队。从策略到执行有人负责，你重点盯结果和线索质量。",
+    how: "把「在微信找客户」交给有经验的团队，从策略到执行全程有人负责。你重点盯结果和线索质量就行。",
     howGap: "怎么选团队、合作模式怎么定、费用结构大概什么样——报告里有详细说明。",
     schemeLabel: "省心获客方案"
   },
   content: {
     shortLabel: "长效获客",
     title: "先让人认识你、信任你，再持续引来客户",
-    how: "核心思路：在微信生态里搭好内容和客户承接体系，用好内容吸引潜在客户关注你，再配合推广把内容放大。前期需要耐心，但获客成本会越来越低。",
+    how: "在微信生态搭好内容体系和客户承接，用内容吸引潜在客户关注，再配合推广放大效果。前期要耐心，但获客成本会越来越低。",
     howGap: "内容怎么做、推广怎么配合、你的行业适合什么内容形式——报告里有完整拆解。",
     schemeLabel: "长效获客方案"
   }
@@ -202,37 +202,6 @@ const loadingMessages = [
   "正在匹配最适合的获客方式",
   "马上告诉你结果"
 ];
-
-const businessLabels = {
-  online: "线上经营",
-  offline: "线下门店",
-  mixed: "线上 + 线下"
-};
-
-const storeLabels = {
-  single: "1 家店",
-  small: "2-5 家店",
-  large: "6 家以上"
-};
-
-const currentMethodLabels = {
-  coldcall: "电话/加微信",
-  referral: "转介绍/熟人",
-  content: "内容获客",
-  ads: "线上推广"
-};
-
-const contentAbilityShorts = {
-  none: "基本没有",
-  weak: "有但没章法",
-  experienced: "有平台经验"
-};
-
-const participationShorts = {
-  a: "自己主导",
-  b: "协作推进",
-  c: "交给专业团队"
-};
 
 /* ===== 状态 ===== */
 const state = {
@@ -264,7 +233,7 @@ const resultSummaryText = document.getElementById("result-summary-text");
 const resultHowText = document.getElementById("result-how-text");
 const traitList = document.getElementById("trait-list");
 const actionList = document.getElementById("action-list");
-const situationCards = document.getElementById("situation-cards");
+const resultHowGap = document.getElementById("result-how-gap");
 
 /* ===== 路由 ===== */
 function showScreen(name) {
@@ -490,30 +459,9 @@ function renderResult() {
   resultSummaryText.textContent = buildMethodComparison(resultType);
   resultHowText.textContent = profile.how;
 
-  // 渲染信息缺口引导
-  const howGapEl = document.getElementById("result-how-gap");
-  if (howGapEl) howGapEl.textContent = profile.howGap;
-
   renderList(traitList, buildAnalysisList(resultType));
   renderList(actionList, buildActionList(resultType));
-
-  // 情况回扣卡片
-  const cards = [];
-  cards.push({ label: "当前获客方式", value: currentMethodLabels[state.answers.currentMethod] || "—" });
-  cards.push({ label: "经营形式", value: businessLabels[state.answers.business] || "—" });
-  if (state.answers.stores) {
-    cards.push({ label: "门店规模", value: storeLabels[state.answers.stores] });
-  }
-  cards.push({ label: "内容能力", value: contentAbilityShorts[state.answers.contentAbility] || "—" });
-  cards.push({ label: "推进偏好", value: participationShorts[state.answers.participation] || "—" });
-  cards.push({ label: "推荐方式", value: profile.schemeLabel });
-
-  situationCards.innerHTML = cards
-    .map(
-      (c) =>
-        `<div class="situation-item"><span class="sit-label">${c.label}</span><span class="sit-value">${c.value}</span></div>`
-    )
-    .join("");
+  resultHowGap.textContent = profile.howGap;
 }
 
 /* ===== Loading ===== */

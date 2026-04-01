@@ -132,6 +132,12 @@ button {
   color: var(--text-soft);
 }
 
+.section-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
 .topbar-tag {
   display: inline-flex;
   align-items: center;
@@ -149,6 +155,10 @@ button {
   display: none;
   flex-direction: column;
   gap: 16px;
+}
+
+#screen-result {
+  gap: 20px;
 }
 
 .screen.active {
@@ -503,58 +513,17 @@ button {
 }
 
 .analysis-text {
-  font-size: 14px;
-  color: var(--text-soft);
+  font-size: 15px;
+  color: var(--text);
   line-height: 1.7;
   margin: 10px 0 8px;
 }
 
 .how-text {
-  margin: 12px 0 0;
-  font-size: 14px;
-  color: var(--text-soft);
-  line-height: 1.8;
-}
-
-.how-gap {
-  margin: 14px 0 0;
-  padding: 12px 14px;
-  border-left: 3px solid var(--green);
-  background: rgba(27, 191, 131, 0.06);
-  border-radius: 0 12px 12px 0;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--green-deep);
-  line-height: 1.7;
-}
-
-.situation-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.situation-item {
-  padding: 14px;
-  border-radius: 16px;
-  background: rgba(27, 191, 131, 0.06);
-  border: 1px solid rgba(27, 191, 131, 0.1);
-}
-
-.situation-item .sit-label {
-  display: block;
-  font-size: 11px;
-  color: var(--text-soft);
-  margin-bottom: 6px;
-}
-
-.situation-item .sit-value {
-  display: block;
-  font-size: 14px;
-  font-weight: 700;
+  margin: 10px 0 0;
+  font-size: 15px;
   color: var(--text);
-  line-height: 1.4;
+  line-height: 1.7;
 }
 
 .score-badge {
@@ -580,15 +549,69 @@ button {
   color: var(--green-deep);
 }
 
+.card-divider {
+  border: none;
+  border-top: 1px solid rgba(16, 54, 42, 0.07);
+  margin: 14px 0;
+}
+
 .bullet-list {
-  margin: 14px 0 0;
-  padding-left: 18px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
   color: var(--text-soft);
-  line-height: 1.8;
+  line-height: 1.7;
+}
+
+.bullet-list li {
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 10px;
+}
+
+.bullet-list li:last-child {
+  margin-bottom: 0;
+}
+
+.bullet-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green-deep);
+  opacity: 0.5;
+}
+
+.how-gap-text {
+  margin: 14px 0 0;
+  font-size: 13px;
+  color: var(--text-soft);
+  line-height: 1.6;
+  opacity: 0.8;
 }
 
 .result-card.highlight {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(230, 252, 242, 0.88));
+}
+
+.result-card {
+  padding: 24px;
+}
+
+.social-proof {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: var(--text-soft);
+  line-height: 1.4;
+}
+
+.social-proof strong {
+  color: var(--green-deep);
+  font-weight: 700;
 }
 
 /* ===== QR Card ===== */
@@ -716,9 +739,5 @@ button {
   .qr-placeholder {
     width: 160px;
     height: 160px;
-  }
-
-  .situation-grid {
-    grid-template-columns: 1fr 1fr;
   }
 }
