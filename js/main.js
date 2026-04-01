@@ -1,40 +1,3 @@
-/* ===== 三条路线详情 ===== */
-const routeDetails = {
-  ad: {
-    icon: "🚀",
-    title: "广告直投",
-    desc: "通过微信生态的广告投放，直接触达潜在客户，让对你的产品或服务感兴趣的人主动找上来。不需要等内容慢慢发酵，花钱就能起量。",
-    features: [
-      { icon: "⚡", text: "上线快，最快当天就能开始收到客户咨询" },
-      { icon: "🎯", text: "可以精准定向行业、地区、人群特征" },
-      { icon: "📊", text: "花了多少、来了多少，数据清清楚楚" }
-    ],
-    fit: "有一定预算、想先验证获客效果、团队能跟进线索的老板。"
-  },
-  agency: {
-    icon: "🤝",
-    title: "专业代跑",
-    desc: "把获客这件事交给专业团队来执行。从账户搭建、素材制作到投放优化，不用自己操心，你只需要盯结果。",
-    features: [
-      { icon: "🛠️", text: "专业团队负责全流程，省心省力" },
-      { icon: "📈", text: "有成熟的投放经验和行业数据积累" },
-      { icon: "🔄", text: "持续优化，不用自己摸索试错" }
-    ],
-    fit: "没有专人负责推广、不想自己摸索投放、希望省心出结果的老板。"
-  },
-  content: {
-    icon: "📈",
-    title: "内容经营 + 投流",
-    desc: "先在微信生态里搭好内容和承接体系（视频号、公众号、企微等），再用投流把好内容放大。前期慢一点，但获客成本会越来越低。",
-    features: [
-      { icon: "📝", text: "内容帮你建立信任，客户质量更高" },
-      { icon: "💰", text: "长期来看获客成本比纯广告低" },
-      { icon: "🔗", text: "内容 + 私域 + 投流形成完整闭环" }
-    ],
-    fit: "有一定内容基础或愿意投入内容建设、看重长期获客效率的老板。"
-  }
-};
-
 /* ===== 场景化题目（去问卷感） ===== */
 const questionBank = [
   {
@@ -87,7 +50,7 @@ const questionBank = [
       {
         id: "b",
         main: "有人帮我做，我盯结果就行",
-        sub: "没精力自己摸索投放",
+        sub: "没精力自己摸索",
         scores: { agency: 2 },
         primary: "agency"
       },
@@ -209,29 +172,32 @@ const questionBank = [
   }
 ];
 
-/* ===== 结果数据 ===== */
+/* ===== 结果数据（前台不出现"广告""投放""代投"） ===== */
 const resultProfiles = {
   ad: {
-    shortLabel: "直接起量型",
-    title: "你现阶段更适合先把找客户跑起来",
-    schemeLabel: "广告投放方案"
+    shortLabel: "精准获客",
+    title: "直接找到想买你东西的人，让他们主动来找你",
+    how: "通过微信生态精准触达潜在客户——系统帮你找到对你的产品或服务感兴趣的人，直接把你推到他们面前。不用等、不用养，上线就能开始收到咨询。",
+    schemeLabel: "精准获客方案"
   },
   agency: {
-    shortLabel: "专业代跑型",
-    title: "你现阶段更适合让专业团队先帮你跑",
-    schemeLabel: "专业代投方案"
+    shortLabel: "省心获客",
+    title: "有专业团队帮你搞定，你专心做生意",
+    how: "把「在微信找客户」这件事交给有经验的团队来做。从策略到执行全程有人负责，你不用自己摸索，重点盯结果和线索质量就行。",
+    schemeLabel: "省心获客方案"
   },
   content: {
-    shortLabel: "经营放大型",
-    title: "你现阶段更适合先搭好基础再放大",
-    schemeLabel: "内容经营 + 投流方案"
+    shortLabel: "长效获客",
+    title: "先让人认识你、信任你，再持续引来客户",
+    how: "在微信生态里搭好你的内容和客户承接体系（视频号、公众号、企业微信等），用好内容吸引潜在客户关注你，再配合推广把内容放大。前期需要一些耐心，但获客成本会越来越低。",
+    schemeLabel: "长效获客方案"
   }
 };
 
 const loadingMessages = [
   "正在分析你的情况…",
-  "正在对比三条获客路径",
-  "马上告诉你更适合先走哪条路"
+  "正在匹配最适合的获客方式",
+  "马上告诉你结果"
 ];
 
 const businessLabels = {
@@ -278,7 +244,6 @@ const state = {
 /* ===== DOM ===== */
 const screens = {
   intro: document.getElementById("screen-intro"),
-  routeDetail: document.getElementById("screen-route-detail"),
   quiz: document.getElementById("screen-quiz"),
   loading: document.getElementById("screen-loading"),
   result: document.getElementById("screen-result")
@@ -293,6 +258,7 @@ const resultTypeShort = document.getElementById("result-type-short");
 const resultTypeTitle = document.getElementById("result-type-title");
 const resultScore = document.getElementById("result-score");
 const resultSummaryText = document.getElementById("result-summary-text");
+const resultHowText = document.getElementById("result-how-text");
 const traitList = document.getElementById("trait-list");
 const actionList = document.getElementById("action-list");
 const situationCards = document.getElementById("situation-cards");
@@ -301,30 +267,8 @@ const situationCards = document.getElementById("situation-cards");
 function showScreen(name) {
   Object.values(screens).forEach((s) => s.classList.remove("active"));
   screens[name].classList.add("active");
-  // 滚回顶部
   document.querySelector(".phone-frame").scrollTop = 0;
   window.scrollTo(0, 0);
-}
-
-/* ===== 路线详情 ===== */
-function showRouteDetail(routeKey) {
-  const route = routeDetails[routeKey];
-  if (!route) return;
-
-  document.getElementById("detail-icon").textContent = route.icon;
-  document.getElementById("detail-title").textContent = route.title;
-  document.getElementById("detail-desc").textContent = route.desc;
-  document.getElementById("detail-fit-text").textContent = route.fit;
-
-  const featuresEl = document.getElementById("detail-features");
-  featuresEl.innerHTML = route.features
-    .map(
-      (f) =>
-        `<div class="detail-feature"><span class="feat-icon">${f.icon}</span><span class="feat-text">${f.text}</span></div>`
-    )
-    .join("");
-
-  showScreen("routeDetail");
 }
 
 /* ===== 答题流程 ===== */
@@ -419,24 +363,24 @@ function computeMatchScore(type) {
 function buildMethodComparison(type) {
   const method = state.answers.currentMethod;
   if (method === "coldcall") {
-    if (type === "ad") return "相比一个一个打电话，广告投放能让客户主动找上门，效率完全不在一个量级。";
+    if (type === "ad") return "相比一个一个打电话，这种方式能让感兴趣的客户主动找上门，效率完全不在一个量级。";
     if (type === "agency") return "相比自己打电话找客户，专业团队能帮你系统化获客，不再靠人力硬扛。";
-    return "打电话只能一对一，把内容和经营基础搭好后，一条内容可能带来一批客户。";
+    return "打电话只能一对一，把内容和客户承接做好后，一条内容可能带来一批客户。";
   }
   if (method === "referral") {
-    if (type === "ad") return "转介绍虽然精准但量有限，广告投放能帮你打开新客源，不再只等老客户介绍。";
-    if (type === "agency") return "转介绍量不稳定，让专业团队做投放可以持续补充新客源。";
+    if (type === "ad") return "转介绍虽然精准但量有限，这种方式能帮你打开新客源，不再只等老客户介绍。";
+    if (type === "agency") return "转介绍量不稳定，让专业团队持续补充新客源，生意才不容易断档。";
     return "转介绍加上内容经营，能让更多潜在客户主动关注你，不再只靠圈子。";
   }
   if (method === "content") {
-    if (type === "ad") return "内容获客见效慢，先用投放快速验证哪些客户愿意买单，再反哺内容方向。";
-    if (type === "agency") return "内容做得不错但转化不稳定，让团队帮你把投放和内容串起来。";
-    return "你已经有内容基础，下一步是把内容、承接和投放串成一套完整链路。";
+    if (type === "ad") return "内容获客见效慢，先快速验证哪些客户愿意买单，再反哺内容方向。";
+    if (type === "agency") return "内容做得不错但转化不稳定，让专业团队帮你把获客链路串起来。";
+    return "你已经有内容基础，下一步是把内容、承接和推广串成一套完整链路。";
   }
   if (method === "ads") {
-    if (type === "ad") return "已经在做推广，说明方向对。下一步是优化投放效率，让每一块钱花得更值。";
-    if (type === "agency") return "已经在做推广但效果不稳定，交给专业团队做精细化运营可能更合适。";
-    return "已经有投放基础，下一步是把内容经营和投放结合起来，降低长期获客成本。";
+    if (type === "ad") return "已经在做推广，说明方向对。下一步是优化效率，让每一块钱花得更值。";
+    if (type === "agency") return "已经在做推广但效果不稳定，交给有经验的团队做精细化运营可能更合适。";
+    return "已经有推广基础，下一步是把内容经营和推广结合起来，降低长期获客成本。";
   }
   return "";
 }
@@ -460,7 +404,7 @@ function buildAnalysisList(type) {
     return [
       "当前更像先验证阶段，启动速度比完整打法更重要。",
       ca === "none"
-        ? "内容能力还没有，一上来做重容易散。"
+        ? "内容还没起来，先用更直接的方式验证客户需求。"
         : ca === "weak"
           ? "有内容但不成体系，先把有效入口跑出来更实际。"
           : "有平台经验，但眼下优先验证线索和转化效率。",
@@ -474,7 +418,7 @@ function buildAnalysisList(type) {
       ca === "none"
         ? "内容和执行都不稳定，借助成熟团队更现实。"
         : ca === "weak"
-          ? "内容没章法，先让专业团队把动作带起来。"
+          ? "有一些基础但没章法，先让专业团队把动作带起来。"
           : "有经验但缺稳定推进机制，交给团队起步更快。",
       businessInsight
     ].filter(Boolean).slice(0, 3);
@@ -495,11 +439,11 @@ function buildActionList(type) {
   if (type === "ad") {
     return [
       state.answers.business === "online"
-        ? "先把咨询入口和跟进话术整理清楚，再测试第一轮。"
+        ? "先把咨询入口和跟进话术整理清楚，再开始第一轮。"
         : state.answers.business === "offline"
           ? "先按门店范围和到店承接方式设计第一轮获客动作。"
           : "先分清线上咨询和线下到店两个目标，别混着跑。",
-      "小范围验证哪些人群和素材更容易带来有效咨询。",
+      "小范围验证哪些人群和内容更容易带来有效咨询。",
       "有第一轮反馈后，再决定加量还是补承接环节。"
     ];
   }
@@ -511,19 +455,19 @@ function buildActionList(type) {
         : state.answers.business === "mixed"
           ? "先把线上和线下两类目标拆开，让团队分口径推进。"
           : "先把线索标准和预算范围定清楚，再开始推进。",
-      "专业团队负责执行，你重点盯线索质量和成交情况。",
+      "你重点盯线索质量和成交情况，执行交给团队。",
       "先跑一轮标准化测试，再决定是否继续放大。"
     ];
   }
 
   return [
     state.answers.business === "online"
-      ? "先把内容、咨询承接和私域动作连起来。"
+      ? "先把内容、咨询承接和客户管理连起来。"
       : state.answers.business === "offline"
         ? "先把门店内容、到店承接和转化流程串起来。"
         : "先把线上内容、线下承接和后续跟进分工清楚。",
     "用轻量内容验证哪些表达和案例最能吸引目标客户。",
-    "内容和承接稳定后，再配合投流放大。"
+    "内容和承接稳定后，再配合推广放大效果。"
   ];
 }
 
@@ -541,6 +485,7 @@ function renderResult() {
   resultTypeTitle.textContent = profile.title;
   resultScore.textContent = score;
   resultSummaryText.textContent = buildMethodComparison(resultType);
+  resultHowText.textContent = profile.how;
   renderList(traitList, buildAnalysisList(resultType));
   renderList(actionList, buildActionList(resultType));
 
@@ -552,7 +497,7 @@ function renderResult() {
   }
   cards.push({ label: "内容能力", value: contentAbilityShorts[state.answers.contentAbility] || "—" });
   cards.push({ label: "推进偏好", value: participationShorts[state.answers.participation] || "—" });
-  cards.push({ label: "对应方案", value: profile.schemeLabel });
+  cards.push({ label: "推荐方式", value: profile.schemeLabel });
 
   situationCards.innerHTML = cards
     .map(
@@ -602,29 +547,10 @@ function initEvents() {
     showScreen("quiz");
   });
 
-  // 详情页 → 答题
-  document.querySelector('[data-action="start-from-detail"]').addEventListener("click", () => {
-    resetState();
-    showScreen("quiz");
-  });
-
-  // 详情页 → 返回首页
-  document.querySelector('[data-action="back-to-intro"]').addEventListener("click", () => {
-    showScreen("intro");
-  });
-
-  // 重新测试
+  // 重新来
   document.querySelector('[data-action="restart"]').addEventListener("click", () => {
     resetState();
     showScreen("intro");
-  });
-
-  // 路线卡片点击 → 详情
-  document.querySelectorAll(".route-card[data-route]").forEach((card) => {
-    card.addEventListener("click", () => {
-      const routeKey = card.dataset.route;
-      showRouteDetail(routeKey);
-    });
   });
 }
 
